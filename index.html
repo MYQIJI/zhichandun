@@ -6,43 +6,56 @@
     <title>知产盾™ · 数字资产确权助手</title>
     <style>
         :root {
-            --bg-outer: #050c18;
-            --bg-card: #0a1528;
-            --bg-input: #0f1f38;
-            --border-main: #1a3a5c;
-            --border-glow: #3899dd;
-            --text-primary: #d6f2ff;
-            --text-secondary: #8ba4c0;
-            --accent: #4db8ff;
-            --accent-glow: #63e0ff;
-            --btn-green: #1a6b3c;
-            --btn-green-hover: #218a4d;
-            --btn-blue: #1a4a7a;
-            --btn-blue-hover: #235d95;
-            --highlight: #ffd54f;
+            --bg-deep: #0a1a0f;
+            --bg-card: rgba(15, 35, 20, 0.55);
+            --border-glow: rgba(160, 220, 180, 0.3);
+            --text-primary: #e0f0e0;
+            --text-secondary: #a0c8b0;
+            --accent-green: #80e0a0;
+            --accent-purple: #c0a0e0;
+            --btn-green: #2a6a3f;
+            --btn-green-hover: #3a8a5a;
+            --highlight: #ffe0a0;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-            background: var(--bg-outer);
+            background: var(--bg-deep);
             color: var(--text-primary);
             line-height: 1.7;
             min-height: 100vh;
-            background-image:
-                linear-gradient(rgba(56, 153, 221, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 153, 221, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+            overflow-x: hidden;
+            animation: bgBreath 8s ease-in-out infinite alternate;
         }
 
-        .container { max-width: 780px; margin: 0 auto; padding: 40px 20px; }
+        @keyframes bgBreath {
+            0% { background-color: #0a1a0f; }
+            100% { background-color: #0d1f12; }
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
 
         .header {
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 0;
-            border-bottom: 1px solid var(--border-main);
+            border-bottom: 1px solid var(--border-glow);
             position: relative;
         }
         .header::after {
@@ -51,47 +64,49 @@
             bottom: -1px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
+            width: 100px;
             height: 2px;
-            background: var(--accent-glow);
-            box-shadow: 0 0 12px var(--accent-glow);
+            background: linear-gradient(90deg, transparent, var(--accent-green), var(--accent-purple), transparent);
         }
 
         .header h1 {
-            font-size: 2.4em;
-            color: var(--accent-glow);
-            margin-bottom: 8px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(99, 224, 255, 0.3);
+            font-size: 2.6em;
+            letter-spacing: 3px;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-purple), var(--accent-green));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleShine 3s linear infinite;
         }
+
+        @keyframes titleShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
         .header .subtitle {
             color: var(--text-secondary);
             font-size: 1.1em;
             letter-spacing: 1px;
+            margin-top: 8px;
         }
 
         .card {
             background: var(--bg-card);
-            border: 1px solid var(--border-main);
-            border-radius: 10px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
             padding: 28px;
             margin: 20px 0;
             position: relative;
-            transition: all 0.3s ease;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -1px;
-            left: 20px;
-            right: 20px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
-            opacity: 0.6;
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
         }
         .card:hover {
-            border-color: var(--border-glow);
-            box-shadow: 0 0 20px rgba(56, 153, 221, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(128, 224, 160, 0.12), 0 0 0 2px rgba(192, 160, 224, 0.2);
         }
 
         .card h2 {
@@ -103,29 +118,27 @@
             gap: 8px;
         }
         .card h2 .icon {
-            width: 32px;
-            height: 32px;
-            background: rgba(56, 153, 221, 0.15);
-            border: 1px solid var(--border-glow);
-            border-radius: 6px;
+            width: 34px; height: 34px;
+            background: rgba(128, 224, 160, 0.12);
+            border: 1px solid var(--accent-green);
+            border-radius: 8px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 17px;
         }
-
         .card p, .card li { color: var(--text-secondary); margin: 6px 0; font-size: 0.95em; }
 
         .btn {
             display: inline-block;
             padding: 13px 28px;
             text-decoration: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.95em;
             font-weight: bold;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
             position: relative;
             overflow: hidden;
         }
@@ -134,34 +147,47 @@
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .btn-primary:hover { background: var(--btn-green-hover); transform: translateY(-1px); }
+        .btn-primary:hover {
+            background: var(--btn-green-hover);
+            box-shadow: 0 0 24px rgba(128, 224, 160, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active {
+            transform: scale(0.95);
+        }
         .btn-outline {
             background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
         }
-        .btn-outline:hover { background: rgba(77, 184, 255, 0.1); transform: translateY(-1px); }
+        .btn-outline:hover {
+            background: rgba(128, 224, 160, 0.08);
+            box-shadow: 0 0 20px rgba(128, 224, 160, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-outline:active {
+            transform: scale(0.95);
+        }
 
         .steps { margin: 15px 0 10px 0; }
         .step {
-            background: rgba(15, 31, 56, 0.6);
-            border-left: 3px solid var(--accent);
+            background: rgba(15, 35, 20, 0.5);
+            border-left: 3px solid var(--accent-green);
             padding: 12px 15px;
             margin: 8px 0;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 6px 6px 0;
             font-size: 0.9em;
             color: var(--text-secondary);
         }
         .step strong { color: var(--text-primary); }
         .step .num {
             display: inline-block;
-            width: 22px;
-            height: 22px;
-            background: var(--accent);
-            color: #050c18;
+            width: 24px; height: 24px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-purple));
+            color: #0a1a0f;
             text-align: center;
-            line-height: 22px;
-            border-radius: 4px;
+            line-height: 24px;
+            border-radius: 6px;
             margin-right: 8px;
             font-size: 0.85em;
             font-weight: bold;
@@ -174,26 +200,55 @@
             margin-top: 15px;
         }
         .contact-item {
-            background: rgba(15, 31, 56, 0.5);
-            border: 1px solid var(--border-main);
-            border-radius: 6px;
-            padding: 12px;
+            background: rgba(15, 35, 20, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 14px;
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.25s;
+            cursor: pointer;
+            position: relative;
         }
-        .contact-item:hover { border-color: var(--border-glow); }
+        .contact-item:hover {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 16px rgba(192, 160, 224, 0.2);
+        }
         .contact-item .label { color: var(--text-secondary); font-size: 0.8em; }
-        .contact-item .value { color: var(--accent); font-size: 0.9em; font-weight: bold; }
-        .contact-item a { color: var(--accent); text-decoration: none; }
+        .contact-item .value { color: var(--accent-green); font-size: 0.9em; font-weight: bold; }
+        .contact-item a { color: var(--accent-green); text-decoration: none; }
+        .contact-item .copied-tip {
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-purple);
+            color: #0a1a0f;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .contact-item .copied-tip.show { opacity: 1; }
 
         .footer {
             text-align: center;
             margin-top: 40px;
             padding-top: 20px;
-            border-top: 1px solid var(--border-main);
-            color: #4a5f7a;
+            border-top: 1px solid var(--border-glow);
+            color: #5a7a65;
             font-size: 0.82em;
             letter-spacing: 0.5px;
+            animation: footerFadeIn 2s ease-out;
+        }
+
+        @keyframes footerFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 600px) {
@@ -204,6 +259,7 @@
     </style>
 </head>
 <body>
+    <canvas id="particleCanvas"></canvas>
 <div class="container">
     <div class="header">
         <h1>🛡️ 知产盾™</h1>
@@ -231,17 +287,19 @@
             <div class="step"><span class="num">3</span>完成支付后，客服将回复<strong>激活码</strong>，输入即可解锁全部功能</div>
         </div>
         <div class="contact-grid">
-            <div class="contact-item">
-                <div class="label">📧 邮箱</div>
-                <div class="value"><a href="mailto:3225957720@qq.com">3225957720@qq.com</a></div>
+            <div class="contact-item" onclick="copyToClipboard('3225957720@qq.com', this)" style="cursor:pointer;">
+                <div class="label">📧 邮箱（点击复制）</div>
+                <div class="value"><a href="mailto:3225957720@qq.com" onclick="event.stopPropagation();">3225957720@qq.com</a></div>
+                <span class="copied-tip">已复制！</span>
             </div>
-            <div class="contact-item">
-                <div class="label">🛒 闲鱼店铺</div>
+            <div class="contact-item" onclick="copyToClipboard('芳草碧恋777', this)" style="cursor:pointer;">
+                <div class="label">🛒 闲鱼店铺（点击复制）</div>
                 <div class="value">搜「知产盾」或「芳草碧恋777」</div>
+                <span class="copied-tip">已复制！</span>
             </div>
             <div class="contact-item">
                 <div class="label">🔗 GitHub</div>
-                <div class="value"><a href="https://github.com/MYQIJI/notary-sop">notary-sop</a></div>
+                <div class="value"><a href="https://github.com/MYQIJI/notary-sop" target="_blank">notary-sop</a></div>
             </div>
             <div class="contact-item">
                 <div class="label">🌐 官网</div>
@@ -254,5 +312,85 @@
         <p>师门™ 出品 | 内核: VCUI联邦版权保护引擎 | 所有操作本地执行 | 数据不上传</p>
     </div>
 </div>
+
+<script>
+    function copyToClipboard(text, element) {
+        navigator.clipboard.writeText(text).then(function() {
+            var tip = element.querySelector('.copied-tip');
+            if (tip) {
+                tip.classList.add('show');
+                setTimeout(function() { tip.classList.remove('show'); }, 1500);
+            }
+        });
+    }
+
+    (function() {
+        var canvas = document.getElementById('particleCanvas');
+        var ctx = canvas.getContext('2d');
+        var particles = [];
+        var maxParticles = 55;
+        var connectionDistance = 110;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function createParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: (Math.random() - 0.5) * 0.6,
+                radius: Math.random() * 2 + 1,
+                alpha: Math.random() * 0.5 + 0.3
+            };
+        }
+
+        for (var i = 0; i < maxParticles; i++) {
+            particles.push(createParticle());
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(160, 220, 180, ' + p.alpha + ')';
+                ctx.fill();
+
+                for (var j = i + 1; j < particles.length; j++) {
+                    var p2 = particles[j];
+                    var dx = p.x - p2.x;
+                    var dy = p.y - p2.y;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        var lineAlpha = (1 - dist / connectionDistance) * 0.25;
+                        ctx.strokeStyle = 'rgba(192, 160, 224, ' + lineAlpha + ')';
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+</script>
 </body>
 </html>
