@@ -2,41 +2,257 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>知产盾™ · 数字资产确权助手</title>
     <style>
-        body { font-family: "Microsoft YaHei", sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; background: #0d1117; color: #e6edf3; }
-        h1 { color: #58a6ff; }
-        .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin: 15px 0; }
-        .btn { display: inline-block; background: #238636; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 10px 5px; }
-        .btn-outline { background: transparent; border: 1px solid #58a6ff; color: #58a6ff; }
+        :root {
+            --bg-outer: #050c18;
+            --bg-card: #0a1528;
+            --bg-input: #0f1f38;
+            --border-main: #1a3a5c;
+            --border-glow: #3899dd;
+            --text-primary: #d6f2ff;
+            --text-secondary: #8ba4c0;
+            --accent: #4db8ff;
+            --accent-glow: #63e0ff;
+            --btn-green: #1a6b3c;
+            --btn-green-hover: #218a4d;
+            --btn-blue: #1a4a7a;
+            --btn-blue-hover: #235d95;
+            --highlight: #ffd54f;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: var(--bg-outer);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            background-image:
+                linear-gradient(rgba(56, 153, 221, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 153, 221, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .container { max-width: 780px; margin: 0 auto; padding: 40px 20px; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--border-main);
+            position: relative;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: var(--accent-glow);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .header h1 {
+            font-size: 2.4em;
+            color: var(--accent-glow);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(99, 224, 255, 0.3);
+        }
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-main);
+            border-radius: 10px;
+            padding: 28px;
+            margin: 20px 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+            opacity: 0.6;
+        }
+        .card:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 20px rgba(56, 153, 221, 0.08);
+        }
+
+        .card h2 {
+            font-size: 1.3em;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card h2 .icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(56, 153, 221, 0.15);
+            border: 1px solid var(--border-glow);
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .card p, .card li { color: var(--text-secondary); margin: 6px 0; font-size: 0.95em; }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 28px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary {
+            background: var(--btn-green);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary:hover { background: var(--btn-green-hover); transform: translateY(-1px); }
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        .btn-outline:hover { background: rgba(77, 184, 255, 0.1); transform: translateY(-1px); }
+
+        .steps { margin: 15px 0 10px 0; }
+        .step {
+            background: rgba(15, 31, 56, 0.6);
+            border-left: 3px solid var(--accent);
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+        .step strong { color: var(--text-primary); }
+        .step .num {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            background: var(--accent);
+            color: #050c18;
+            text-align: center;
+            line-height: 22px;
+            border-radius: 4px;
+            margin-right: 8px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .contact-item {
+            background: rgba(15, 31, 56, 0.5);
+            border: 1px solid var(--border-main);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .contact-item:hover { border-color: var(--border-glow); }
+        .contact-item .label { color: var(--text-secondary); font-size: 0.8em; }
+        .contact-item .value { color: var(--accent); font-size: 0.9em; font-weight: bold; }
+        .contact-item a { color: var(--accent); text-decoration: none; }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-main);
+            color: #4a5f7a;
+            font-size: 0.82em;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 12px; }
+            .header h1 { font-size: 1.6em; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <h1>🛡️ 知产盾™</h1>
-    <p>一份SOP + 三个Agent = 10分钟为你的数字资产装上法律护甲</p>
+<div class="container">
+    <div class="header">
+        <h1>🛡️ 知产盾™</h1>
+        <p class="subtitle">一份SOP + 自动化工具 = 10分钟为你的数字资产装上法律护甲</p>
+    </div>
 
     <div class="card">
-        <h2>🚀 开源基础版（免费）</h2>
+        <h2><span class="icon">📖</span> 什么是知产盾？</h2>
+        <p>专为独立创作者、一人公司、AI从业者打造的<span style="color:var(--highlight);font-weight:bold;">零成本、合规、可维权</span>数字资产确权体系。</p>
+        <p>无需版权局注册、无需缴费、无需等待审核，10分钟完成全套司法有效确权。</p>
+    </div>
+
+    <div class="card">
+        <h2><span class="icon">🚀</span> 开源基础版（永久免费）</h2>
         <p>8步确权流程、使用索引、实战案例、原子记忆包</p>
-        <a class="btn" href="https://github.com/MYQIJI/notary-sop" target="_blank">前往GitHub下载</a>
+        <a class="btn btn-outline" href="https://github.com/MYQIJI/notary-sop" target="_blank">📂 GitHub 开源仓库</a>
     </div>
 
     <div class="card">
-        <h2>💰 商业完整版</h2>
-        <p>全套可复用模板 + 商用授权 + 自动化Agent工具 + 一客一码水印</p>
-        <p><strong>获取方式：</strong></p>
-        <ol>
-            <li>下载并运行知产盾V3.3交付版，获取<strong>机器码</strong></li>
-            <li>通过以下任一方式联系客服，发送机器码</li>
-            <li>完成支付后，客服将回复<strong>激活码</strong></li>
-        </ol>
-        <p>📧 邮箱：3225957720@qq.com</p>
-        <p>🛒 闲鱼店铺：搜索「知产盾」或「芳草碧恋777」</p>
-        <p>🔗 GitHub：<a href="https://github.com/MYQIJI/notary-sop" style="color:#58a6ff;">github.com/MYQIJI/notary-sop</a></p>
+        <h2><span class="icon">💰</span> 商业完整版</h2>
+        <p>全套可复用模板 + 商用授权 + 自动化Agent工具 + 一客一码防倒卖水印</p>
+        <div class="steps">
+            <div class="step"><span class="num">1</span>下载并运行 <strong>知产盾交付版</strong>，获取您的<strong>机器码</strong></div>
+            <div class="step"><span class="num">2</span>通过下方任一方式联系客服，发送机器码</div>
+            <div class="step"><span class="num">3</span>完成支付后，客服将回复<strong>激活码</strong>，输入即可解锁全部功能</div>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <div class="label">📧 邮箱</div>
+                <div class="value"><a href="mailto:3225957720@qq.com">3225957720@qq.com</a></div>
+            </div>
+            <div class="contact-item">
+                <div class="label">🛒 闲鱼店铺</div>
+                <div class="value">搜「知产盾」或「芳草碧恋777」</div>
+            </div>
+            <div class="contact-item">
+                <div class="label">🔗 GitHub</div>
+                <div class="value"><a href="https://github.com/MYQIJI/notary-sop">notary-sop</a></div>
+            </div>
+            <div class="contact-item">
+                <div class="label">🌐 官网</div>
+                <div class="value">myqiji.github.io/zhichandun</div>
+            </div>
+        </div>
     </div>
 
-    <div style="text-align:center; margin-top:30px; color:#8b949e; font-size:12px;">
+    <div class="footer">
         <p>师门™ 出品 | 内核: VCUI联邦版权保护引擎 | 所有操作本地执行 | 数据不上传</p>
     </div>
+</div>
 </body>
 </html>
