@@ -235,6 +235,15 @@
         }
         .contact-item .copied-tip.show { opacity: 1; }
 
+        .wechat-highlight {
+            grid-column: 1 / -1;
+            background: rgba(128, 224, 160, 0.08) !important;
+            border-color: var(--accent-green) !important;
+            padding: 18px !important;
+        }
+        .wechat-highlight .label { font-size: 0.9em !important; color: var(--accent-green) !important; }
+        .wechat-highlight .value { font-size: 1.1em !important; }
+
         .footer {
             text-align: center;
             margin-top: 40px;
@@ -287,6 +296,11 @@
             <div class="step"><span class="num">3</span>完成支付后，客服将回复<strong>激活码</strong>，输入即可解锁全部功能</div>
         </div>
         <div class="contact-grid">
+            <div class="contact-item wechat-highlight" onclick="copyToClipboard('3225957720', this)" style="cursor:pointer;">
+                <div class="label">💬 微信（推荐，点击复制微信号）</div>
+                <div class="value">微信号：3225957720</div>
+                <span class="copied-tip">已复制！打开微信添加好友</span>
+            </div>
             <div class="contact-item" onclick="copyToClipboard('3225957720@qq.com', this)" style="cursor:pointer;">
                 <div class="label">📧 邮箱（点击复制）</div>
                 <div class="value"><a href="mailto:3225957720@qq.com" onclick="event.stopPropagation();">3225957720@qq.com</a></div>
@@ -300,10 +314,6 @@
             <div class="contact-item">
                 <div class="label">🔗 GitHub</div>
                 <div class="value"><a href="https://github.com/MYQIJI/notary-sop" target="_blank">notary-sop</a></div>
-            </div>
-            <div class="contact-item">
-                <div class="label">🌐 官网</div>
-                <div class="value">myqiji.github.io/zhichandun</div>
             </div>
         </div>
     </div>
